@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <a href="{% url 'singup' %}">SignUP</a>
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<div class="mt-10">
+    <div class="bg-white p-8 rounded-2xl shadow-md text-center">
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-4">
+            Xush kelibsiz 👋
+        </h2>
+
+        <p class="text-gray-600">
+            Bu sizning bosh sahifangiz. Bu yerda asosiy kontent joylashadi.
+        </p>
+
+    </div>
+</div>
+
+{% endblock %}

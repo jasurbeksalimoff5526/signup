@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Kirish{% endblock %}
+
+{% block content %}
+
+
+<div class="max-w-md mx-auto mt-12">
+
+    <!-- Signup link -->
+    <div class="text-right mb-4">
+        <a href="{% url 'signup' %}"
+           class="text-sm text-indigo-600 hover:underline">
+            Yangi hisob yaratish
+        </a>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-white p-8 rounded-2xl shadow-xl border">
+
+        <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">
+            Kirish
+        </h2>
+
+        <p class="text-gray-500 text-sm text-center mb-6">
+            Login va parolingizni kiriting
+        </p>
+
+        {% if error %}
+            <div class="bg-red-100 text-red-700 p-3 rounded-lg mb-4 text-sm">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        <!-- Form -->
+        <form method="post" class="space-y-5 form-wrapper">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="{% if field.errors %}error{% endif %}">
+
+                    <label class="block text-sm mb-1 text-gray-600">
+                        {{ field.label }}
+                    </label>
+
+                    <!-- 🔥 INPUT -->
+                    {{ field }}
+
+                    {% if field.errors %}
+                        <p class="text-red-500 text-xs mt-1">
+                            {{ field.errors.0 }}
+                        </p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit"
+                class="w-full py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition shadow-md">
+                Kirish
+            </button>
+        </form>
+
+        <!-- Footer -->
+        <p class="text-center text-sm text-gray-500 mt-6">
+            Hali ro'yxatdan o'tmaganmisiz?
+            <a href="{% url 'signup' %}" class="text-indigo-600 hover:underline">
+                Ro'yxatdan o'tish
+            </a>
+        </p>
+
+    </div>
+</div>
+
+{% endblock %}

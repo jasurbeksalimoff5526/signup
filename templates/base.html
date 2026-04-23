@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}MyApp{% endblock %}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- 🔥 GLOBAL STYLE SYSTEM -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* CARD */
+        .card {
+            background: #fff;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        /* INPUT */
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            background: #f9fafb;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            background: #fff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.2);
+            outline: none;
+        }
+
+        /* ERROR */
+        .field-error input {
+            border-color: #ef4444;
+            background: #fff1f2;
+        }
+
+        .error-text {
+            font-size: 12px;
+            color: #ef4444;
+            margin-top: 4px;
+        }
+
+        /* BUTTON */
+        .btn {
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+        }
+
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d5db;
+        }
+
+        .btn-success {
+            background: #22c55e;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #16a34a;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        /* LABEL */
+        .label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+            color: #6b7280;
+        }
+
+        /* TITLES */
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- NAVBAR -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+            <a href="/" class="text-xl font-bold text-indigo-600">
+                MyApp
+            </a>
+
+            <div class="flex items-center space-x-4">
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'profile' user.pk %}" class="btn btn-success">
+                        Profil
+                    </a>
+
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-danger">
+                            Logout
+                        </button>
+                    </form>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}" class="btn btn-secondary">
+                        Login
+                    </a>
+
+                    <a href="{% url 'signup' %}" class="btn btn-primary">
+                        Sign Up
+                    </a>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- MESSAGES -->
+    <div class="max-w-7xl mx-auto w-full px-4 mt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-3 px-4 py-3 rounded-xl shadow
+                    {% if message.tags == 'error' %} bg-red-100 text-red-700
+                    {% elif message.tags == 'success' %} bg-green-100 text-green-700
+                    {% else %} bg-gray-100 text-gray-700 {% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- CONTENT -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 py-6">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t mt-auto">
+        <div class="max-w-7xl mx-auto px-4 py-4 text-center text-sm text-gray-500">
+            © 2026 MyApp
+        </div>
+    </footer>
+
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

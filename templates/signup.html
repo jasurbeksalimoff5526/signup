@@ -1,88 +1,69 @@
-<!DOCTYPE html>
-<html lang="uz">
-<head>
-    <meta charset="UTF-8">
-    <title>Ro'yxatdan o'tish</title>
+{% extends 'base.html' %}
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
+{% block title %}Ro'yxatdan o'tish{% endblock %}
 
-        .form-container {
-            background: #fff;
-            padding: 30px;
-            width: 350px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
+{% block content %}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+<style>
+/* 🔥 FORM CARD */
+.signup-card {
+    max-width: 420px;
+    margin: 60px auto;
+    background: #fff;
+    padding: 35px 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
 
-        .form-group {
-            margin-bottom: 15px;
-        }
+/* input */
+.signup-card input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: #f9fafb;
+    transition: 0.2s;
+}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
+/* focus */
+.signup-card input:focus {
+    background: #fff;
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102,126,234,0.2);
+    outline: none;
+}
 
-        input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
+/* error */
+.signup-card .error input {
+    border-color: #e63946;
+    background: #fff1f2;
+}
 
-        input:focus {
-            border-color: #007bff;
-            outline: none;
-        }
+/* error text */
+.errorlist {
+    color: #e63946;
+    font-size: 12px;
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+}
 
-        .errorlist {
-            color: red;
-            font-size: 13px;
-            margin: 5px 0;
-            padding: 0;
-            list-style: none;
-        }
+/* non field */
+.non-field-errors {
+    background: #ffe5e5;
+    color: #b00020;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+</style>
 
-        .non-field-errors {
-            background: #ffe0e0;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-        }
+<div class="signup-card">
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #007bff;
-            border: none;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background: #0056b3;
-        }
-    </style>
-</head>
-<body>
-
-<div class="form-container">
-    <h2>Ro'yxatdan o'tish</h2>
+    <h2 class="text-2xl font-bold text-center mb-6">
+        Ro'yxatdan o'tish
+    </h2>
 
     {% if form.non_field_errors %}
         <div class="non-field-errors">
@@ -92,12 +73,16 @@
         </div>
     {% endif %}
 
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" class="space-y-4">
         {% csrf_token %}
 
         {% for field in form %}
-            <div class="form-group">
-                <label>{{ field.label }}</label>
+            <div class="{% if field.errors %}error{% endif %}">
+                
+                <label class="block text-sm mb-1 text-gray-600">
+                    {{ field.label }}
+                </label>
+
                 {{ field }}
 
                 {% if field.errors %}
@@ -107,12 +92,23 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
+
             </div>
         {% endfor %}
 
-        <button type="submit">Ro'yxatdan o'tish</button>
+        <button type="submit"
+            class="w-full py-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition shadow-md">
+            Ro'yxatdan o'tish
+        </button>
     </form>
+
+    <p class="text-center text-sm text-gray-500 mt-5">
+        Akkountingiz bormi?
+        <a href="{% url 'login' %}" class="text-indigo-600 hover:underline">
+            Kirish
+        </a>
+    </p>
+
 </div>
 
-</body>
-</html>
+{% endblock %}

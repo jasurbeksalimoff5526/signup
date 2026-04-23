@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <a class="btn btn-secondary" href="{% url 'profile' user.pk %}">Profilga qaytish</a>
+    <a class="btn btn-secondary" href="/">Bosh sahifa</a>
+
+    <div class="form-card">
+        <h2>Profil ma'lumotlari</h2>
+        <p class="section-subtitle">Maydonlarni yangilab, saqlang.</p>
+
+        {% if form.non_field_errors %}
+            <ul class="errorlist">
+                {% for err in form.non_field_errors %}
+                    <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        <form method="post" enctype="multipart/form-data" class="form-fields">
+            {% csrf_token %}
+            {% for field in form %}
+                <p>
+                    {{ field.label_tag }}
+                    {{ field }}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for err in field.errors %}
+                                <li>{{ err }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </p>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary btn-block">Saqlash</button>
+        </form>
+    </div>
+
+</body>
+</html>

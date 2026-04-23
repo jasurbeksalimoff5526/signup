@@ -1,32 +1,12 @@
-from django import forms
 from .models import CustomUser
-from django.forms import ValidationError
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-class SignUpForm(forms.ModelForm):
-    password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': 'parolni kiriting'})
-    )
-    password2 = forms.CharField(
-        label='parolni tasdiqlash',
-        widget=forms.PasswordInput(attrs={'placeholder': 'parolni qayta kiriting'})
-    )
-
-    class Meta:
+class CustomUserCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ['first_name', 'last_name', 'email', 'age', 'username', 'password' ,'image']
+        fields = UserCreationForm.Meta.fields +  ('first_name', 'last_name', 'email', 'age', 'username' ,'image')
 
-    def clean_password(self):
-        password = self.cleaned_data.get('password')
-        if password and len(password) < 8:
-            raise ValidationError("parol kamida 8ta belgidan iborat bo'lishi kerak")
-        return password
-
-    def clean(self):
-        cleaned_data = super().clean()
-        password = self.cleaned_data.get('password')
-        password2 = self.cleaned_data.get('password2')
-
-        if password and password2 and password != password2:
-            raise ValidationError("parollar mos emas")
-
-        return cleaned_data
+class CustomUserChangeForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = CustomUser
+        fields = ["age", "image"]
